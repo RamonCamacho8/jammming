@@ -1,11 +1,11 @@
-#Jammming
+# Jammming
 This is a project for my portfolio, implementing codecademy tasks.
 
-##Related Skills
+## Related Skills
 In this project I'm using:
--React
--Git
--Spotify API integration
--Typescript (I prefer to use types.)
+- React
+- Git
+- Spotify API integration
+- Typescript (I prefer to use types.)
 
 
