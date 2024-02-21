@@ -1,8 +1,9 @@
-import { Playlist } from "../lib/CustomTypes"; 
+import { Playlist, Track } from "../lib/CustomTypes"; 
 
-const playlists : Playlist[] = [
+
+const ownnedPlaylists: Playlist[] = [
     {
-        name: "My Playlist",
+        name: "Owned Playlist",
         tracks: [
             {
                 name: "Song 1",
@@ -23,4 +24,14 @@ const playlists : Playlist[] = [
     },
 ];
 
-export { playlists }
+
+
+const resultTracksList: Track[] = [
+    {
+      name: "Wonderwall",
+      artist: "Oasis",
+      album: "What's the Story Morning Glory",
+    }
+];
+  
+export { ownnedPlaylists, resultTracksList}

@@ -9,7 +9,8 @@ function TrackComponent(props: { track: Track }) {
 
     return (
         <div>
-        <h1>SearchBarResults</h1>
+            <h2>{track.name}</h2>
+            <p>{track.artist} | {track.album}</p>
         </div>
     );
 }
