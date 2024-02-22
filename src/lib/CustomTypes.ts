@@ -1,5 +1,5 @@
 export type Track = {
-    name: string;
+    title: string;
     artist: string;
     album: string;
 }

@@ -6,19 +6,19 @@ const ownnedPlaylists: Playlist[] = [
         name: "Owned Playlist",
         tracks: [
             {
-                name: "Song 1",
-                artist: "Artist 1",
-                album: "Album 1",
+                title: "Wonderwall",
+                artist: "Oasis",
+                album: "What's the Story Morning Glory",
             },
             {
-                name: "Song 2",
-                artist: "Artist 2",
-                album: "Album 2",
+                title: "Black Parade",
+                artist: "My Chemical Romance",
+                album: "The Black Parade",
             },
             {
-                name: "Song 3",
-                artist: "Artist 3",
-                album: "Album 3",
+                title: "Bohemian Rhapsody",
+                artist: "Queen",
+                album: "A Night at the Opera",
             },
         ],
     },
@@ -28,9 +28,9 @@ const ownnedPlaylists: Playlist[] = [
 
 const resultTracksList: Track[] = [
     {
-      name: "Wonderwall",
-      artist: "Oasis",
-      album: "What's the Story Morning Glory",
+      title: "Back in Black",
+      artist: "AC/DC",
+      album: "Back in Black",
     }
 ];
   

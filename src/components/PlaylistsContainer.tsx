@@ -7,13 +7,13 @@ import Tracklist from "./Tracklist";
 function PlaylistsContainer() { 
 
     return (
-        <div>
+        <div className="playlists">
             {/* These are the playlists the user have */}
-            <h1>Yours Playlists:</h1>
+            <h2>Yours Playlists:</h2>
             <div>
                 {
                     playlists.map((playlist) => {
-                        return <PlaylistComponent playlist={playlist} />
+                        return <PlaylistComponent key={playlist.name} playlist={playlist} />
                     })
                 }
             </div>

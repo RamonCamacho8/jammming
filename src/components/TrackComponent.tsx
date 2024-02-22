@@ -6,10 +6,9 @@ function TrackComponent(props: { track: Track }) {
 
     const { track } = props;
 
-
     return (
         <div>
-            <h2>{track.name}</h2>
+            <h4>{track.title}</h4>
             <p>{track.artist} | {track.album}</p>
         </div>
     );

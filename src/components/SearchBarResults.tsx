@@ -1,20 +1,13 @@
 import React from "react";
 import Tracklist from "./Tracklist";
-
-const tracklist = [
-    {
-        name: "Track 1",
-        artist: "Artist 1",
-        album: "Album 1",
-    }
-];
+import { resultTracksList } from "../persistence/playlists";
 
 function SearchBarResults() {
   return (
-    <div>
-      <h1>Results</h1>
+    <div className="results">
+      <h2>Results</h2>
       <div>
-        <Tracklist tracklist={tracklist} />
+        <Tracklist tracklist={resultTracksList} />
       </div>
     </div>
   );

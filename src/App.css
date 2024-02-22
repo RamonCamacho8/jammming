@@ -5,3 +5,48 @@
   box-sizing: border-box;
 
 }
+
+div#root {
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.App {
+  height: 80%;
+  width: 50%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 9fr;
+  
+
+  grid-template-areas: "search search"
+                       "results playlists";
+  gap: 10px;
+}
+
+.App > * {
+  border: 1px solid black;
+
+}
+
+.search-bar {
+  grid-area: search;
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+  height: 100%;
+
+}
+
+.results {
+  grid-area: results;
+  
+}
+
+.playlists {
+  grid-area: playlists;
+}

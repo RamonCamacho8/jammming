@@ -6,13 +6,14 @@ import SearchBarResults from './components/SearchBarResults';
 import SearchBar from './components/SearchBar';
 
 function App() {
+
+  
+
   return (
     <div className="App">
-      <header className="App-header">
-        <SearchBar />
-        <SearchBarResults />
-        <PlaylistsContainer />
-      </header>
+      <SearchBar />
+      <SearchBarResults />
+      <PlaylistsContainer />
     </div>
   );
 }

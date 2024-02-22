@@ -9,7 +9,7 @@ function PlaylistComponent(props:{playlist: Playlist }): JSX.Element {
 
     return (
         <div>
-            <h1>{playlist.name}</h1>
+            <h3>{playlist.name}</h3>
             <Tracklist tracklist={playlist.tracks} />
         </div>
     );
