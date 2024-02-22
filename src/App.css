@@ -50,3 +50,10 @@ div#root {
 .playlists {
   grid-area: playlists;
 }
+
+
+@media only screen and (max-width: 800px) {
+  .App {
+    width: 80%;
+  }
+}

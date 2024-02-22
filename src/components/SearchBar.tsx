@@ -4,11 +4,10 @@ function SearchBar(props: {searchString: string, setSearchString: (searchString:
 
 
   const { searchString, setSearchString } = props;
-  
+
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("SearchBar.onSubmit");
   };
 
   return (
