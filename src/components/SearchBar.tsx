@@ -1,6 +1,10 @@
 import React from "react";
 
-function SearchBar() {
+function SearchBar(props: {searchString: string, setSearchString: (searchString: string) => void}) {
+
+
+  const { searchString, setSearchString } = props;
+  
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -10,7 +14,7 @@ function SearchBar() {
   return (
     <form className="search-bar" onSubmit={onSubmit}>
       <label htmlFor=""></label>
-      <input type="text" />
+      <input value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Search for a song." type="text" />
       <button type="submit">Search</button>
     </form>
   );

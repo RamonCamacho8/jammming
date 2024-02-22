@@ -1,10 +1,22 @@
 import React from "react";
 import PlaylistComponent from "./PlaylistComponent";
-import { ownnedPlaylists as playlists} from "../persistence/playlists";
 import Tracklist from "./Tracklist";
+import { Playlist, Track } from "../model/CustomTypes";
 
+const toggleString = "Remove"
+function PlaylistsContainer(props: { playlists: Playlist[], selectedTracks: Track[], currentPlaylist : Playlist | null, setCurrentPlaylist: (playlist: Playlist) => void}) {
 
-function PlaylistsContainer() { 
+    const { playlists, selectedTracks, setCurrentPlaylist, currentPlaylist } = props;
+
+    const removeTrackFromPlaylist = (track: Track): void => {
+        
+        if(currentPlaylist !== null && currentPlaylist !== undefined){
+            const newTracks = currentPlaylist.tracks.filter((t) => t.title !== track.title);
+            currentPlaylist.tracks = newTracks;
+            setCurrentPlaylist(currentPlaylist);
+        }
+    
+    }
 
     return (
         <div className="playlists">
@@ -13,16 +25,10 @@ function PlaylistsContainer() {
             <div>
                 {
                     playlists.map((playlist) => {
-                        return <PlaylistComponent key={playlist.name} playlist={playlist} />
+                        return <PlaylistComponent currentPlaylist={currentPlaylist} setCurrentPlaylist={setCurrentPlaylist} onClickButton={removeTrackFromPlaylist} key={playlist.name} playlist={playlist} toggleString={toggleString} />
                     })
                 }
             </div>
-            <div>
-                <input type="text" placeholder="Enter the playlist name" />
-                <Tracklist tracklist={[]} />
-                <button>Save to Spotify</button>
-            </div>
-            
         </div>
     );
 }

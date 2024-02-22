@@ -1,15 +1,18 @@
 import React from "react";
-import { Track } from "../lib/CustomTypes";
+import { Track } from "../model/CustomTypes";
 import TrackComponent from "./TrackComponent";
 
 
 
-function Tracklist(props: { tracklist: Track[] }) {
-    const { tracklist } = props;
+function Tracklist(props: { tracklist: Track[], onClickButton: (track: Track) => void, toggleString: string}) {
+  
+  const { tracklist, onClickButton, toggleString } = props;
+
+  
   return (
     <div>
         {tracklist.map((track, index) => {
-            return <TrackComponent key={index} track={track} />;
+            return <TrackComponent key={index} track={track} onClickButton={onClickButton} toggleString={toggleString} />;
         })}
     </div>
   );
