@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Track } from "../model/CustomTypes";
 
 
-function TrackComponent(props: { track: Track, toggleString: string, onToggle: (track: Track, toggleString: string) => void}) {
+function TrackComponent(props: { track: Track, toggleString: string, onToggle: (track: Track) => void}) {
 
     const { track, toggleString, onToggle } = props;
 
 
    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        onToggle(track, toggleString);
+        onToggle(track);
     }
 
     return (

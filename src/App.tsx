@@ -27,115 +27,51 @@ function App() {
   useEffect(() => {
 
     let results = filterTrackByQueryString(tracksList, searchString);
-    results = subtractTracklist(results, currentPlaylist?.tracks);
+    if(currentPlaylist)
+      results = subtractTracklist(results, currentPlaylist.tracks);
 
     setSearchResults(results);
   }, [searchString]);
 
+  const addTrackToCurrent = (track: Track) => {
+    if(currentPlaylist){
+      console.log("Adding track to current playlist");
+      const newTracks = [...currentPlaylist.tracks, track];
+      setCurrentPlaylist({...currentPlaylist, tracks: newTracks});
+    }
+  }
+
+  const removeTrackFromCurrent = (track: Track) => {
+    if(currentPlaylist){
+      console.log("Removing track from current playlist");
+      let tempTracks = [...currentPlaylist.tracks];
+      const newTracks = removeTrackFromTracklist(track, tempTracks);
+      setCurrentPlaylist({...currentPlaylist, tracks: newTracks});
+    }
+  }
 
   useEffect(() => {
-
-    if(currentPlaylist === null){
-      return;
+    
+    if(currentPlaylist){
+      console.log("Current playlist changed");
+      const index = playlists.findIndex((p: Playlist) => p.uid === currentPlaylist.uid);
+      let tempPlaylists = [...playlists];
+      tempPlaylists[index] = currentPlaylist as Playlist;
+      setPlaylists(tempPlaylists);
+    } else {
+      console.log("Current playlist is null");
     }
-    console.log('Current playlist updated to: ', currentPlaylist);
-    //console.log("Current playlist: ", currentPlaylist);
-    /* console.log('Updating playlist: ', currentPlaylist.name);
-    const tempPlaylists = [...playlists];
-    const index = playlists.findIndex((p) => p.uid === currentPlaylist.uid);
-    tempPlaylists[index] = currentPlaylist;
-    setPlaylists(tempPlaylists); */
 
   }, [currentPlaylist]);
 
-  
 
-  const handleAddingTrack = (track: Track): void => {
-
-    if(currentPlaylist === null){
-      alert("Please select a playlist");
-      return;
-    }
-    else if(isTrackInTracklist(track, currentPlaylist.tracks)){
-      alert("This track is already in the playlist");
-      return;
-    }
-    else {
-      const tempPlaylist = {...currentPlaylist};
-      console.log('Adding Track')
-      console.log("Original playlist: ", currentPlaylist);
-      //console.log("New playlist: ", tempPlaylist);
-
-      tempPlaylist.tracks.push(track);
-      setCurrentPlaylist(tempPlaylist);
-    }
-      
-  }
-
-  const handleRemovingTrack = (track: Track): void => {
-    
-    if(currentPlaylist === null){
-      alert("Please select a playlist");
-      return;
-    }
-    else if(!isTrackInTracklist(track, currentPlaylist.tracks)){
-      alert("This track is not in the playlist");
-      return;
-    }
-    else {
-      const tempPlaylist = {...currentPlaylist};
-      tempPlaylist.tracks = removeTrackFromTracklist(track, tempPlaylist.tracks);
-      
-      console.log('Removing Track')
-      console.log("Original playlist: ", currentPlaylist);
-      //console.log("New playlist: ", tempPlaylist);
-
-      setCurrentPlaylist(tempPlaylist);
-    }
-  }
-
-
-  const handleTogglingTrack = (track: Track, toggleMode: string): void => {
-    console.log('Toggling track: ', track);
-    console.log(currentPlaylist?.uid)
-    if(currentPlaylist === null){
-      alert("Please select a playlist");
-      return;
-    }
-
-    //Create a copy of the current playlist
-    const tempPlaylist = {...currentPlaylist};
-
-    console.log('Removing track from playlist', tempPlaylist.tracks.length)
-
-    switch(toggleMode){
-      case 'add':
-        tempPlaylist.tracks.push(track);
-        break;
-      case 'remove':
-        tempPlaylist.tracks = removeTrackFromTracklist(track, tempPlaylist.tracks);
-        break;
-      default:
-        alert("Invalid toggle mode");
-        break;
-    }
-    
-    console.log('Removed track from playlist', tempPlaylist.tracks.length)
-
-    const index = playlists.findIndex((p) => p.uid === currentPlaylist.uid);
-    const tempPlaylists = [...playlists];
-    tempPlaylists[index] = tempPlaylist;
-    
-    setCurrentPlaylist(tempPlaylist);
-  
-  }
 
   return (
     <div className="App">
       <SearchBar searchString={searchString} setSearchString={setSearchString} />
       
-      <SearchBarResults resultsToRender={searchResults} onToggle={handleTogglingTrack}/>
-      <PlaylistsContainer currentPlaylist={currentPlaylist} playlists={playlists} setCurrentPlaylist={setCurrentPlaylist} onToggle={handleTogglingTrack}/>
+      <SearchBarResults resultsToRender={searchResults} onToggle={addTrackToCurrent}/>
+      <PlaylistsContainer currentPlaylist={currentPlaylist} playlists={playlists} setCurrentPlaylist={setCurrentPlaylist} onToggle={removeTrackFromCurrent}/>
     </div> 
   );
 }

@@ -4,7 +4,7 @@ import { ToggleMode, Track } from "../model/CustomTypes";
 
 const toggleString = "add";
 
-function SearchBarResults(props: { resultsToRender: Track[], onToggle : (track: Track, toggleString: string) => void}) {
+function SearchBarResults(props: { resultsToRender: Track[], onToggle : (track: Track) => void}) {
 
   const { resultsToRender: results, onToggle} = props;
 

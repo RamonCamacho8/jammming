@@ -4,7 +4,7 @@ import TrackComponent from "./TrackComponent";
 
 
 
-function Tracklist(props: { tracklist: Track[], toggleString: string, onToggle: (track: Track, toggleString: string) => void}) {
+function Tracklist(props: { tracklist: Track[], toggleString: string, onToggle: (track: Track) => void}) {
   
   const { tracklist, toggleString, onToggle } = props;
 

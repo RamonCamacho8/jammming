@@ -4,9 +4,9 @@ import { Playlist, ToggleMode, Track } from "../model/CustomTypes";
 
 const toggleString = "remove";
 function PlaylistsContainer(props: {  playlists: Playlist[], setCurrentPlaylist: (playlist: Playlist) => void,
-    onToggle: (track: Track, toggleString: string) => void, currentPlaylist: Playlist | null}) {
+    onToggle: (track: Track) => void, currentPlaylist: Playlist | null}) {
 
-    const { playlists, setCurrentPlaylist,currentPlaylist, onToggle} = props;
+    const { playlists, setCurrentPlaylist, currentPlaylist, onToggle} = props;
 
     return (
         <div className="playlists">
