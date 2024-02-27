@@ -1,17 +1,18 @@
 import React from "react";
 import Tracklist from "./Tracklist";
-import { Track } from "../model/CustomTypes";
+import { ToggleMode, Track } from "../model/CustomTypes";
 
-const toggleString = "Add to playlist";
-function SearchBarResults(props: { resultsToRender: Track[], addToPlaylists : (track: Track) => void}) {
+const toggleString = "add";
 
-  const { resultsToRender: results, addToPlaylists} = props;
+function SearchBarResults(props: { resultsToRender: Track[], onToggle : (track: Track, toggleString: string) => void}) {
+
+  const { resultsToRender: results, onToggle} = props;
 
 
   return (
     <div className="results">
       <h2>Results</h2>
-      <Tracklist tracklist={results} onClickButton={addToPlaylists} toggleString={toggleString} />
+      <Tracklist tracklist={results} toggleString={toggleString} onToggle={onToggle} />
     </div>
   );
 }

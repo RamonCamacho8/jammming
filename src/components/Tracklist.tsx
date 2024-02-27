@@ -4,15 +4,15 @@ import TrackComponent from "./TrackComponent";
 
 
 
-function Tracklist(props: { tracklist: Track[], onClickButton: (track: Track) => void, toggleString: string}) {
+function Tracklist(props: { tracklist: Track[], toggleString: string, onToggle: (track: Track, toggleString: string) => void}) {
   
-  const { tracklist, onClickButton, toggleString } = props;
+  const { tracklist, toggleString, onToggle } = props;
 
   
   return (
     <div>
         {tracklist.map((track, index) => {
-            return <TrackComponent key={index} track={track} onClickButton={onClickButton} toggleString={toggleString} />;
+            return <TrackComponent key={index} track={track} toggleString={toggleString} onToggle={onToggle} />;
         })}
     </div>
   );

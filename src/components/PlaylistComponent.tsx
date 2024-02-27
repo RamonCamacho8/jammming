@@ -1,61 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Tracklist from "./Tracklist";
 import { Playlist } from "../model/CustomTypes";
 import { Track } from "../model/CustomTypes";
-import { useState } from "react";
 
-function PlaylistComponent(props:{playlist: Playlist, onClickButton: (track: Track) => void, toggleString: string,
-     currentPlaylist : Playlist | null ,setCurrentPlaylist: (playlist: Playlist) => void,
-     onNameChange: (newName: string,playlist: Playlist) => void }): JSX.Element {
+function PlaylistComponent(props:{playlist: Playlist, toggleString: string, setCurrentPlaylist: (playlist: Playlist) => void, currentPlaylist: Playlist | null, onToggle: (track: Track, toggleString: string) => void}): JSX.Element {
 
-    const { playlist, onClickButton, onNameChange, setCurrentPlaylist, toggleString, currentPlaylist} = props;
-    const [isThisSelected, setIsThisSelected] = useState(false);
-    const [titleEditable, setTitleEditable] = useState(false);
+    const { playlist, currentPlaylist, setCurrentPlaylist, onToggle, toggleString} = props;
+    const [isThisPlaylistSelected, setIsThisPlaylistSelected] = useState(false);
+ 
 
-    const [playlistName, setPlaylistName] = useState(playlist.name);
     useEffect(() => {
-
-        if(currentPlaylist === null){
-            return;
-        } else if(currentPlaylist?.uid === playlist.uid){
-            setIsThisSelected(true);
+        
+        if(currentPlaylist?.uid === playlist?.uid){
+            setIsThisPlaylistSelected(true);
         } else {
-            setIsThisSelected(false);
-            setTitleEditable(false);
-            setPlaylistName(playlist.name);
-
+            setIsThisPlaylistSelected(false);
         }
-    }, [currentPlaylist, playlist])
 
-    useEffect(() => {
+    }, [currentPlaylist]);
 
-    },[playlist.name]);
+    
 
     const handlePlaylistSelection = () => {
         setCurrentPlaylist(playlist);
     }
 
-    const handleTitleEdition = () => {
-        if(isThisSelected){
-            setTitleEditable(true);
-        }
-    }
-
-
     return (
         <div onClick={handlePlaylistSelection}>
-            {titleEditable ? 
-            <div>
-                <input type="text" value={playlistName} onChange={e => setPlaylistName(e.target.value)} /> 
-                <button onClick={() => {setTitleEditable(false); setPlaylistName(playlist.name)}}>Cancel</button>
-                <button onClick={() => {setTitleEditable(false); onNameChange(playlistName, playlist)}}>Save</button>
-            </div>: 
-            <div>
-                <h3 style={{display:'inline'}} onClick={handleTitleEdition}>{playlist.name}</h3>
-                {isThisSelected && <button onClick={handleTitleEdition}>Edit Name</button>}
-            </div>}
-            {/* <h3 onClick={handlePlaylistSelection} >{playlist.name}</h3> */}
-            { isThisSelected && <Tracklist tracklist={playlist.tracks} onClickButton={onClickButton} toggleString={toggleString} />}
+            <h3 onClick={handlePlaylistSelection} style={{backgroundColor: isThisPlaylistSelected ? 'lightblue' : 'wheat'}} >{playlist.name}</h3>
+            <Tracklist tracklist={playlist.tracks} toggleString={toggleString} onToggle={onToggle} />
         </div>
     )
   

@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Track } from "../model/CustomTypes";
 
 
-function TrackComponent(props: { track: Track, toggleString: string,  onClickButton: (track: Track) => void}) {
+function TrackComponent(props: { track: Track, toggleString: string, onToggle: (track: Track, toggleString: string) => void}) {
 
-    const { track, toggleString, onClickButton } = props;
+    const { track, toggleString, onToggle } = props;
+
 
    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        onClickButton(track);
+        onToggle(track, toggleString);
     }
 
     return (

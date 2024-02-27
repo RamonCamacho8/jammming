@@ -12,3 +12,8 @@ export type Playlist = {
     tracks: Track[];
     
 }
+
+export enum ToggleMode {
+    ADD = "add",
+    REMOVE = "remove"
+}
