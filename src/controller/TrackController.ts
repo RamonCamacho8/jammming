@@ -27,8 +27,14 @@ export const filterTrackByQueryString = (tracklist: Track[], filterString: strin
     let byArtist = filterByArtist(tracklist, filterString);
     let byAlbum = filterByAlbum(tracklist, filterString);
 
+    
+    let result = byTitle.concat(byArtist, byAlbum);
+    //remove duplicates
+    result = result.filter((t: Track, index: number, self: Track[]) => {
+        return index === self.findIndex((t2: Track) => t2.uid === t.uid);
+    });  
 
-    return byTitle.concat(byArtist, byAlbum);
+    return result;
 
 }
 
