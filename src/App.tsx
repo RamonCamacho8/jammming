@@ -26,38 +26,31 @@ function App() {
     if(currentPlaylist)
       results = subtractTracklist(results, currentPlaylist.tracks);
     setSearchResults(results);
-  }, [searchString, currentPlaylist]);
+  }, [searchString, currentPlaylist, playlists]);
 
   const addTrackToCurrent = (track: Track) => {
     if(currentPlaylist){
       console.log("Adding track to current playlist");
-      const newTracks = [...currentPlaylist.tracks, track];
-      setCurrentPlaylist({...currentPlaylist, tracks: newTracks}); 
+      const index = playlists.findIndex((p: Playlist) => p.uid === currentPlaylist.uid);
+      playlists[index].tracks.push(track);
+      setPlaylists([...playlists]);
     }
   }
 
   const removeTrackFromCurrent = (track: Track) => {
     if(currentPlaylist){
       console.log("Removing track from current playlist");
-      const newTracks = removeTrackFromTracklist(track, currentPlaylist.tracks);
-      debugger;
-      const newPlaylist = {...currentPlaylist, tracks: newTracks};
-      setCurrentPlaylist(newPlaylist);
+      const index = playlists.findIndex((p: Playlist) => p.uid === currentPlaylist.uid);
+      playlists[index].tracks = removeTrackFromTracklist(track, playlists[index].tracks);
+      setPlaylists([...playlists]);
     }
   }
 
-  useEffect(() => {
-     
-    if(currentPlaylist){
-      console.log("Current playlist changed"); 
-      const index = playlists.findIndex((p: Playlist) => p.uid === currentPlaylist.uid);
-      let tempPlaylists = [...playlists];
-      tempPlaylists[index] = currentPlaylist as Playlist;
-      setPlaylists(tempPlaylists);
-    }
-
-  }, [currentPlaylist]);
-
+  const handlePlaylistRename = (playlist: Playlist, newName: string) => {
+    const index = playlists.findIndex((p: Playlist) => p.uid === playlist.uid);
+    playlists[index].name = newName;
+    setPlaylists([...playlists]);
+  }
 
 
   return (
@@ -65,7 +58,9 @@ function App() {
       <SearchBar searchString={searchString} setSearchString={setSearchString} />
       
       <SearchBarResults resultsToRender={searchResults} onToggle={addTrackToCurrent}/>
-      <PlaylistsContainer currentPlaylist={currentPlaylist} playlists={playlists} setCurrentPlaylist={setCurrentPlaylist} onToggle={removeTrackFromCurrent}/>
+      <PlaylistsContainer currentPlaylist={currentPlaylist} playlists={playlists}
+                          setCurrentPlaylist={setCurrentPlaylist} onToggle={removeTrackFromCurrent}
+                          onRename={handlePlaylistRename}/>
     </div> 
   );
 }

@@ -3,16 +3,21 @@ import Tracklist from "./Tracklist";
 import { Playlist } from "../model/CustomTypes";
 import { Track } from "../model/CustomTypes";
 
-function PlaylistComponent(props:{playlist: Playlist, toggleString: string, setCurrentPlaylist: (playlist: Playlist) => void, currentPlaylist: Playlist | null, onToggle: (track: Track) => void}): JSX.Element {
+function PlaylistComponent(props:{playlist: Playlist, toggleString: string, 
+    setCurrentPlaylist: (playlist: Playlist) => void, currentPlaylist: Playlist | null,
+     onToggle: (track: Track) => void,
+     onRename: (playlist: Playlist, newName: string) => void}): JSX.Element {
 
-    const {playlist, currentPlaylist, setCurrentPlaylist, onToggle, toggleString} = props;
-    const [isThisPlaylistSelected, setIsThisPlaylistSelected] = useState(false);
+    const {playlist, currentPlaylist, setCurrentPlaylist, onToggle, toggleString, onRename} = props;
+    const [selected, setSelected] = useState(false);
+    const [editing , setEditing] = useState(false);
+    const [name, setName] = useState(playlist.name);
 
     useEffect(() => {
         if (currentPlaylist === playlist) {
-            setIsThisPlaylistSelected(true);
+            setSelected(true);
         } else {
-            setIsThisPlaylistSelected(false);
+            setSelected(false);
         }
     }, [currentPlaylist, playlist]);
  
@@ -21,10 +26,20 @@ function PlaylistComponent(props:{playlist: Playlist, toggleString: string, setC
         setCurrentPlaylist(playlist);
     }
 
+    const handleRename = () => {
+        onRename(playlist, name);
+        setEditing(!editing);
+    }
+
     return (
         <div onClick={handlePlaylistSelection}>
-            <h3 style={{backgroundColor: isThisPlaylistSelected ? 'lightblue' : 'wheat'}} >{playlist.name}</h3>
-            { isThisPlaylistSelected && <Tracklist tracklist={playlist.tracks} toggleString={toggleString} onToggle={onToggle} />}
+            <div style={{backgroundColor: selected ? 'lightblue' : 'wheat'}}>
+                { selected && 
+                    editing ? (<input value={name} onChange={e => setName(e.target.value)} />) : <h3 style={{display:'inline'}} >{playlist.name}</h3>
+                }
+                {selected && <button onClick={() => setEditing(!editing)}>{editing ? "Save" : "Edit"}</button>}
+            </div>
+            { selected && <Tracklist tracklist={playlist.tracks} toggleString={toggleString} onToggle={onToggle} />}
         </div>
     )
   

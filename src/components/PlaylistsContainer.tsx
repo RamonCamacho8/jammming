@@ -4,9 +4,10 @@ import { Playlist, ToggleMode, Track } from "../model/CustomTypes";
 
 const toggleString = "remove";
 function PlaylistsContainer(props: {  playlists: Playlist[], setCurrentPlaylist: (playlist: Playlist) => void,
-    onToggle: (track: Track) => void, currentPlaylist: Playlist | null}) {
+    onToggle: (track: Track) => void, currentPlaylist: Playlist | null,
+    onRename: (playlist: Playlist, newName: string) => void}) {
 
-    const { playlists, setCurrentPlaylist, currentPlaylist, onToggle} = props;
+    const { playlists, setCurrentPlaylist, currentPlaylist, onToggle, onRename} = props;
 
     return (
         <div className="playlists">
@@ -15,7 +16,11 @@ function PlaylistsContainer(props: {  playlists: Playlist[], setCurrentPlaylist:
             <div>
                 {
                     playlists.map((playlist) => {
-                        return <PlaylistComponent currentPlaylist={currentPlaylist} setCurrentPlaylist={setCurrentPlaylist} key={playlist.name} playlist={playlist} onToggle={onToggle} toggleString={toggleString}  />
+                        return <PlaylistComponent currentPlaylist={currentPlaylist} 
+                        setCurrentPlaylist={setCurrentPlaylist} key={playlist.name} 
+                        playlist={playlist} onToggle={onToggle}
+                        onRename={onRename}
+                         toggleString={toggleString}  />
                     })
                 }
             </div>
