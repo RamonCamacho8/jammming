@@ -37,7 +37,7 @@ function PlaylistComponent(props:{playlist: Playlist, toggleString: string,
                 { selected && 
                     editing ? (<input value={name} onChange={e => setName(e.target.value)} />) : <h3 style={{display:'inline'}} >{playlist.name}</h3>
                 }
-                {selected && <button onClick={() => setEditing(!editing)}>{editing ? "Save" : "Edit"}</button>}
+                {selected && <button onClick={handleRename}>{editing ? "Save" : "Edit"}</button>}
             </div>
             { selected && <Tracklist tracklist={playlist.tracks} toggleString={toggleString} onToggle={onToggle} />}
         </div>
