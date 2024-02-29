@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Tracklist from "./Tracklist";
-import { Playlist } from "../model/CustomTypes";
-import { Track } from "../model/CustomTypes";
+import { Playlist } from "../model/Playlist";
+import { Track } from "../model/Track";
 
 function PlaylistComponent(props:{playlist: Playlist, toggleString: string, 
     setCurrentPlaylist: (playlist: Playlist) => void, currentPlaylist: Playlist | null,
-     onToggle: (track: Track) => void,
-     onRename: (playlist: Playlist, newName: string) => void}): JSX.Element {
+    onToggle: (track: Track) => void,
+    onRename: (playlist: Playlist, newName: string) => void,
+    onSave: (playlist: Playlist) => void }): JSX.Element {
 
-    const {playlist, currentPlaylist, setCurrentPlaylist, onToggle, toggleString, onRename} = props;
+    const { playlist, currentPlaylist, toggleString,
+            setCurrentPlaylist, onToggle, onRename, onSave} = props;
+
     const [selected, setSelected] = useState(false);
     const [editing , setEditing] = useState(false);
     const [name, setName] = useState(playlist.name);
@@ -31,6 +34,10 @@ function PlaylistComponent(props:{playlist: Playlist, toggleString: string,
         setEditing(!editing);
     }
 
+    const handleSave = () => {
+        onSave(playlist);
+    }
+
     return (
         <div onClick={handlePlaylistSelection}>
             <div style={{backgroundColor: selected ? 'lightblue' : 'wheat'}}>
@@ -40,6 +47,9 @@ function PlaylistComponent(props:{playlist: Playlist, toggleString: string,
                 {selected && <button onClick={handleRename}>{editing ? "Save" : "Edit"}</button>}
             </div>
             { selected && <Tracklist tracklist={playlist.tracks} toggleString={toggleString} onToggle={onToggle} />}
+            <div>
+                { selected && <button onClick={handleSave}> Save to Spotify </button>}
+            </div>
         </div>
     )
   

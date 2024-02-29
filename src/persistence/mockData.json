@@ -1,0 +1,20 @@
+{
+    "tracks": ["08mG3Y1vljYA6bvDt4Wqkj", "4yBiZFLXn0n9AUJ5sWO88k", "3z8h0TU7ReDPLIbEnYhWZb", "5wQnmLuC1W7ATsArWACrgW"],
+    "playlists": [
+        {
+            "uid" : "1",
+            "name": "Rock",
+            "tracks" : ["08mG3Y1vljYA6bvDt4Wqkj"]
+        },
+        {
+            "uid": "2",
+            "name": "Oasis",
+            "tracks": ["4yBiZFLXn0n9AUJ5sWO88k"]
+        },
+        {
+            "uid": "3",
+            "name": "Queen",
+            "tracks": ["3z8h0TU7ReDPLIbEnYhWZb"]
+        }
+    ]
+}
