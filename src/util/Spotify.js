@@ -1,7 +1,7 @@
 import { generateRandomString } from "./randomString";
+import { client_id_env } from "../envs";
+let client_id = client_id_env // this is replaced with a wrong client id to avoid misuse of the client id
 
-let client_id = "925de6e4ac2c47bf9431bbc21f170fb" // this is replaced with a wrong client id to avoid misuse of the client id
-console.log(process.env.REACT_APP_CLIENT_ID);
 let redirect_uri = "http://localhost:3000/";
 let state = generateRandomString(16);
 let accessToken;
