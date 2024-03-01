@@ -5,8 +5,9 @@ let client_id = client_id_env // this is replaced with a wrong client id to avoi
 let redirect_uri = "http://localhost:3000/";
 let state = generateRandomString(16);
 let accessToken;
+let userURI;
 localStorage.setItem("stateKey", state);
-let scope = "user-read-private user-read-email";
+let scope = "user-read-private user-read-email playlist-read-private";
 
 let url = "https://accounts.spotify.com/authorize";
 url += "?response_type=token";
@@ -58,5 +59,101 @@ export const Spotify = {
         }
         return jsonResponse.tracks.items;
 
+    },
+
+    async savePlaylist(name, trackUris) {
+
+        if (!name || !trackUris.length) {
+          return;
+        }
+    
+        const accessToken = Spotify.getAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        /* let userId;
+    
+        return fetch('https://api.spotify.com/v1/me', {headers: headers}
+        ).then(response => response.json()
+        ).then(jsonResponse => {
+          userId = jsonResponse.id;
+          return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+            headers: headers,
+            method: 'POST',
+            body: JSON.stringify({name: name})
+          }).then(response => response.json()
+          ).then(jsonResponse => {
+            const playlistId = jsonResponse.id;
+            return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`, {
+              headers: headers,
+              method: 'POST',
+              body: JSON.stringify({uris: trackUris})
+            });
+          });
+        }); */
+
+        const response = await fetch(`${searchEndpoint}?q=${term}&type=track`, { headers: headers });
+        const jsonResponse = await response.json();
+        const userId = jsonResponse.id;
+        
+
+    },
+    
+
+    async getUserInfo() {
+
+        console.log('getting user info')
+        const accessToken = Spotify.getAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        const response = await fetch('https://api.spotify.com/v1/me', { headers: headers });
+        const jsonResponse = await response.json();
+        userURI = jsonResponse.uri;
+        console.log(userURI)
+        return jsonResponse;
+    }
+    ,
+
+    async getUserPlaylists() {
+        console.log('getting user playlists')
+        
+        const accessToken = Spotify.getAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        const response = await fetch('https://api.spotify.com/v1/me/playlists?offset=0&limit=20', { headers: headers });
+        const jsonResponse = await response.json();
+        console.log(jsonResponse.items)
+        //debugger;
+        return jsonResponse.items;
+
+    },
+    
+    async getUserCreatedPlaylists() {
+
+        console.log('getting user created playlists')
+        const accessToken = Spotify.getAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        const response = await fetch('https://api.spotify.com/v1/me/playlists?offset=0&limit=20', { headers: headers });
+        const jsonResponse = await response.json();
+        let playlists = jsonResponse.items;
+        return playlists.filter(playlist => playlist.owner.uri === userURI);
+    }
+    ,
+
+    async getPlaylistById(playlistId) {
+        console.log('getting playlist by id')
+        const fields = 'tracks.items(track(name,album(name),artists.name))'
+        const accessToken = Spotify.getAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}?fields=${fields}`, { headers: headers });
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    },
+
+    async getTracksInPlaylist(href) {
+        console.log('getting tracks in playlist')
+        const fields = '?fields=items(track(name,album(name),artists.name))'
+
+        const accessToken = Spotify.getAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        const response = await fetch(href + fields, { headers: headers });
+        const jsonResponse = await response.json();
+        return jsonResponse;
     }
 }

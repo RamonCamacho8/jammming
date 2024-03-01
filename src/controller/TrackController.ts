@@ -4,18 +4,20 @@ import { Spotify } from "../util/Spotify";
 export const searchTracks = async (searchString: string): Promise<Track[]> => {
 
     let rawTracks = await Spotify.searchForTracks(searchString);
-    let tracks: Track[] = rawTracks.map((t: any) => {
-        return {
-            id: t.id,
-            title: t.name,
-            artist: t.artists[0].name,
-            album: t.album.name,
-            uri: t.uri
-        }
-    });
+    console.log(rawTracks);
+    let tracks: Track[] = rawTracks.map((t: any) => trackMapping(t));
 
     return tracks;
+}
 
+export const trackMapping = (t: any): Track => {
+    return {
+        id: t.id,
+        title: t.name,
+        artist: t.artists[0].name,
+        album: t.album.name,
+        uri: t.uri
+    }
 }
 
 

@@ -9,7 +9,9 @@ import { Playlist } from './model/Playlist';
 import { Track } from './model/Track';
 import { subtractTracklist, filterTrackByQueryString, removeTrackFromTracklist } from './controller/TrackController';
 import { Spotify } from './util/Spotify';
+
 import { searchTracks } from './controller/TrackController';
+import { getPlaylists } from './controller/PlaylistController';
 
 function App() {
 
@@ -17,15 +19,20 @@ function App() {
   const [searchResults, setSearchResults] = useState<Track[]>([]);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
-  
 
   useEffect(() => {
-    setPlaylists([...playlists]);
+    /* setPlaylists([...playlists]); */
     Spotify.getAccessToken();
+    Spotify.getUserInfo();
   }, []);
+
 
   const search = useCallback((searchString: string) => {
     searchTracks(searchString).then(setSearchResults);
+  }, []);
+
+  const loadPlaylists = useCallback(() => {
+    getPlaylists().then(setPlaylists);
   }, []);
 
   /* useEffect(() => {
@@ -76,6 +83,7 @@ function App() {
         setCurrentPlaylist={setCurrentPlaylist} onToggle={removeTrackFromCurrent}
         onRename={handlePlaylistRename}
         onSave={savePlaylistToSpotify} />
+        <button onClick={loadPlaylists}>Load playlists</button>
     </div>
   );
 }
