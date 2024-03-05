@@ -10,7 +10,12 @@ export const searchTracks = async (searchString: string): Promise<Track[]> => {
     return tracks;
 }
 
+export const getUrisFromTracks = (tracks: Track[]): string[] => {
+    return tracks.map((t: Track) => t.uri);
+}
+
 export const trackMapping = (t: any): Track => {
+    //console.log(t);
     return {
         id: t.id,
         title: t.name,

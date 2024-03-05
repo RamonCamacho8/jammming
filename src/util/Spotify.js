@@ -7,7 +7,7 @@ let state = generateRandomString(16);
 let accessToken;
 let userURI;
 localStorage.setItem("stateKey", state);
-let scope = "user-read-private user-read-email playlist-read-private";
+let scope = "user-read-private user-read-email playlist-read-private playlist-modify-public playlist-modify-private";
 
 let url = "https://accounts.spotify.com/authorize";
 url += "?response_type=token";
@@ -30,7 +30,7 @@ export const Spotify = {
     getAccessToken() {
         
         if(accessToken){
-            console.log('Already have an access token!')
+            //console.log('Already have an access token!')
             return accessToken;
         }
             
@@ -96,20 +96,27 @@ export const Spotify = {
         
 
     },
+    async getUserID() {
+        console.log('getting user id')
+        const accessToken = Spotify.getAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        const response = await fetch('https://api.spotify.com/v1/me', { headers: headers });
+        const jsonResponse = await response.json();
+        return jsonResponse.id;
+    },
     
 
     async getUserInfo() {
 
-        console.log('getting user info')
+        //console.log('getting user info')
         const accessToken = Spotify.getAccessToken();
         const headers = { Authorization: `Bearer ${accessToken}` };
         const response = await fetch('https://api.spotify.com/v1/me', { headers: headers });
         const jsonResponse = await response.json();
         userURI = jsonResponse.uri;
-        console.log(userURI)
+        //console.log(userURI)
         return jsonResponse;
-    }
-    ,
+    },
 
     async getUserPlaylists() {
         console.log('getting user playlists')
@@ -138,7 +145,7 @@ export const Spotify = {
 
     async getPlaylistById(playlistId) {
         console.log('getting playlist by id')
-        const fields = 'tracks.items(track(name,album(name),artists.name))'
+        const fields = 'tracks.items(track(name,id,uri,album(name),artists.name))'
         const accessToken = Spotify.getAccessToken();
         const headers = { Authorization: `Bearer ${accessToken}` };
         const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}?fields=${fields}`, { headers: headers });
@@ -147,13 +154,27 @@ export const Spotify = {
     },
 
     async getTracksInPlaylist(href) {
-        console.log('getting tracks in playlist')
-        const fields = '?fields=items(track(name,album(name),artists.name))'
+        //console.log('getting tracks in playlist')
+        const fields = '?fields=items(track(name,id,uri,album(name),artists.name))'
 
         const accessToken = Spotify.getAccessToken();
         const headers = { Authorization: `Bearer ${accessToken}` };
         const response = await fetch(href + fields, { headers: headers });
         const jsonResponse = await response.json();
+        //console.log(jsonResponse)
         return jsonResponse;
+    },
+
+    async savePlaylist(playlistId, trackUris) {
+        console.log('saving playlist', playlistId)
+        const accessToken = Spotify.getAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        const userId = await Spotify.getUserID();
+        const uris = 'uris=' + trackUris.join(',');
+        const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?${uris}`, { headers: headers, method: 'PUT' });
+        const jsonResponse = await response.json();
+        console.log(jsonResponse)
     }
+
+
 }

@@ -23,12 +23,10 @@ export const getPlaylists = async (): Promise<Playlist[]> => {
 
 
 const playlistMapping = (p: any): Playlist => {
-    console.log(p);
+    //console.log(p);
     return {
         uid: p.id,
         name: p.name,
         tracks: p.tracks
     }
 }
-
-export {}

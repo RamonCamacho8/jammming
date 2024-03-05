@@ -12,11 +12,13 @@ import { Spotify } from './util/Spotify';
 
 import { searchTracks } from './controller/TrackController';
 import { getPlaylists } from './controller/PlaylistController';
+import { getUrisFromTracks } from './controller/TrackController';
 
 function App() {
 
   //const [searchString, setSearchString] = useState<string>("");
   const [searchResults, setSearchResults] = useState<Track[]>([]);
+  const [displayedSearchResults, setDisplayedSearchResults] = useState<Track[]>([]);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
 
@@ -26,23 +28,38 @@ function App() {
     Spotify.getUserInfo();
   }, []);
 
+  useEffect(() => {
+    if (currentPlaylist) {
+      console.log("Current playlist changed", currentPlaylist);
+      let results = subtractTracklist(searchResults, currentPlaylist.tracks);
+      setDisplayedSearchResults(results);
+    } else {
+      setDisplayedSearchResults(searchResults);
+    }
+
+  }, [currentPlaylist]);
+
 
   const search = useCallback((searchString: string) => {
-    searchTracks(searchString).then(setSearchResults);
+    searchTracks(searchString).then(
+      (tracks: Track[]) => {
+        setSearchResults(tracks);
+        if (currentPlaylist) {
+          let results = filterTrackByQueryString(tracks, searchString);
+          results = subtractTracklist(results, currentPlaylist.tracks);
+          setDisplayedSearchResults(results);
+        }
+        else {
+          setDisplayedSearchResults(tracks);
+        }
+      }
+    );
   }, []);
 
   const loadPlaylists = useCallback(() => {
     getPlaylists().then(setPlaylists);
   }, []);
 
-  /* useEffect(() => {
-
-    let results = filterTrackByQueryString(tracksList, searchString);
-    if (currentPlaylist)
-      results = subtractTracklist(results, currentPlaylist.tracks);
-    setSearchResults(results);
-
-  }, [searchString, currentPlaylist, playlists]); */
 
   const addTrackToCurrent = (track: Track) => {
     if (currentPlaylist) {
@@ -69,16 +86,17 @@ function App() {
   }
 
   const savePlaylistToSpotify = (playlist: Playlist) => {
-    console.log("Saving playlist to Spotify");
+    console.log("Saving playlist to Spotify", playlist);
+    const uris = getUrisFromTracks(playlist.tracks);
+    Spotify.savePlaylist(playlist.uid, uris);
   }
-
 
 
   return (
     <div className="App">
       <SearchBar onSearch={search} />
 
-      <SearchBarResults resultsToRender={searchResults} onToggle={addTrackToCurrent} />
+      <SearchBarResults resultsToRender={displayedSearchResults} onToggle={addTrackToCurrent} />
       <PlaylistsContainer currentPlaylist={currentPlaylist} playlists={playlists}
         setCurrentPlaylist={setCurrentPlaylist} onToggle={removeTrackFromCurrent}
         onRename={handlePlaylistRename}
