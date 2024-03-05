@@ -4,7 +4,6 @@ import PlaylistsContainer from './components/PlaylistsContainer';
 import SearchBarResults from './components/SearchBarResults';
 import SearchBar from './components/SearchBar';
 import { useState } from 'react';
-import { playlists, tracksList } from './persistence/playlists';
 import { Playlist } from './model/Playlist';
 import { Track } from './model/Track';
 import { subtractTracklist, filterTrackByQueryString, removeTrackFromTracklist } from './controller/TrackController';
