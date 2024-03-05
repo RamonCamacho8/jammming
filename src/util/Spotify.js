@@ -60,42 +60,6 @@ export const Spotify = {
         return jsonResponse.tracks.items;
 
     },
-
-    async savePlaylist(name, trackUris) {
-
-        if (!name || !trackUris.length) {
-          return;
-        }
-    
-        const accessToken = Spotify.getAccessToken();
-        const headers = { Authorization: `Bearer ${accessToken}` };
-        /* let userId;
-    
-        return fetch('https://api.spotify.com/v1/me', {headers: headers}
-        ).then(response => response.json()
-        ).then(jsonResponse => {
-          userId = jsonResponse.id;
-          return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
-            headers: headers,
-            method: 'POST',
-            body: JSON.stringify({name: name})
-          }).then(response => response.json()
-          ).then(jsonResponse => {
-            const playlistId = jsonResponse.id;
-            return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`, {
-              headers: headers,
-              method: 'POST',
-              body: JSON.stringify({uris: trackUris})
-            });
-          });
-        }); */
-
-        const response = await fetch(`${searchEndpoint}?q=${term}&type=track`, { headers: headers });
-        const jsonResponse = await response.json();
-        const userId = jsonResponse.id;
-        
-
-    },
     async getUserID() {
         console.log('getting user id')
         const accessToken = Spotify.getAccessToken();
@@ -136,7 +100,7 @@ export const Spotify = {
         console.log('getting user created playlists')
         const accessToken = Spotify.getAccessToken();
         const headers = { Authorization: `Bearer ${accessToken}` };
-        const response = await fetch('https://api.spotify.com/v1/me/playlists?offset=0&limit=20', { headers: headers });
+        const response = await fetch('https://api.spotify.com/v1/me/playlists?offset=0&limit=5', { headers: headers });
         const jsonResponse = await response.json();
         let playlists = jsonResponse.items;
         return playlists.filter(playlist => playlist.owner.uri === userURI);
@@ -165,15 +129,44 @@ export const Spotify = {
         return jsonResponse;
     },
 
-    async savePlaylist(playlistId, trackUris) {
-        console.log('saving playlist', playlistId)
+    async changePlaylistDetails(playlistId, playlistName, playlistDescription) {
+        console.log('changing playlist details')
         const accessToken = Spotify.getAccessToken();
         const headers = { Authorization: `Bearer ${accessToken}` };
-        const userId = await Spotify.getUserID();
+        let body;
+        if(!playlistName) {
+            body = JSON.stringify({ description: playlistDescription });
+        }
+        else if(!playlistDescription) {
+            body = JSON.stringify({ name: playlistName });
+        }
+        else {
+            body = JSON.stringify({ name: playlistName, description: playlistDescription });
+        }
+        
+        const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, { headers: headers, method: 'PUT', body: body });
+        console.log(response)
+    },
+    async updatePlaylistTracks(playlistId, trackUris) {
+        const accessToken = Spotify.getAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` };
+
+        console.log('saving playlist', playlistId)
         const uris = 'uris=' + trackUris.join(',');
-        const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?${uris}`, { headers: headers, method: 'PUT' });
-        const jsonResponse = await response.json();
-        console.log(jsonResponse)
+        response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?${uris}`, { headers: headers, method: 'PUT' });
+        console.log(response)
+    }
+    ,
+
+    async savePlaylist(playlistId, trackUris, playlistName) {
+
+        if (playlistName) {
+            Spotify.changePlaylistDetails(playlistId, playlistName);
+        }
+        if(trackUris){
+            Spotify.updatePlaylistTracks(playlistId, trackUris);
+        }
+       
     }
 
 

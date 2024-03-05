@@ -15,14 +15,12 @@ import { getUrisFromTracks } from './controller/TrackController';
 
 function App() {
 
-  //const [searchString, setSearchString] = useState<string>("");
   const [searchResults, setSearchResults] = useState<Track[]>([]);
   const [displayedSearchResults, setDisplayedSearchResults] = useState<Track[]>([]);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
 
   useEffect(() => {
-    /* setPlaylists([...playlists]); */
     Spotify.getAccessToken();
     Spotify.getUserInfo();
   }, []);
@@ -87,14 +85,13 @@ function App() {
   const savePlaylistToSpotify = (playlist: Playlist) => {
     console.log("Saving playlist to Spotify", playlist);
     const uris = getUrisFromTracks(playlist.tracks);
-    Spotify.savePlaylist(playlist.uid, uris);
+    Spotify.savePlaylist(playlist.uid, uris, playlist.name);
   }
 
 
   return (
     <div className="App">
       <SearchBar onSearch={search} />
-
       <SearchBarResults resultsToRender={displayedSearchResults} onToggle={addTrackToCurrent} />
       <PlaylistsContainer currentPlaylist={currentPlaylist} playlists={playlists}
         setCurrentPlaylist={setCurrentPlaylist} onToggle={removeTrackFromCurrent}
