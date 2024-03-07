@@ -34,7 +34,7 @@ function App() {
       setDisplayedSearchResults(searchResults);
     }
 
-  }, [currentPlaylist]);
+  }, [currentPlaylist, searchResults]);
 
 
   const search = useCallback((searchString: string) => {
@@ -51,7 +51,7 @@ function App() {
         }
       }
     );
-  }, []);
+  }, [currentPlaylist]);
 
   const loadPlaylists = useCallback(() => {
     getPlaylists().then(setPlaylists);
