@@ -153,7 +153,7 @@ export const Spotify = {
 
         console.log('saving playlist', playlistId)
         const uris = 'uris=' + trackUris.join(',');
-        response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?${uris}`, { headers: headers, method: 'PUT' });
+        const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?${uris}`, { headers: headers, method: 'PUT' });
         console.log(response)
     }
     ,
