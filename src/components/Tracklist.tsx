@@ -1,5 +1,5 @@
 import React from "react";
-import { Track } from "../model/CustomTypes";
+import { Track } from "../model/Track";
 import TrackComponent from "./TrackComponent";
 
 

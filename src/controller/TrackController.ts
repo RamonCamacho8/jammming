@@ -1,12 +1,37 @@
-import { Track } from "../model/CustomTypes";
+import { Track } from "../model/Track";
+import { Spotify } from "../util/Spotify";
+
+export const searchTracks = async (searchString: string): Promise<Track[]> => {
+
+    let rawTracks = await Spotify.searchForTracks(searchString);
+    console.log(rawTracks);
+    let tracks: Track[] = rawTracks.map((t: any) => trackMapping(t));
+
+    return tracks;
+}
+
+export const getUrisFromTracks = (tracks: Track[]): string[] => {
+    return tracks.map((t: Track) => t.uri);
+}
+
+export const trackMapping = (t: any): Track => {
+    //console.log(t);
+    return {
+        id: t.id,
+        title: t.name,
+        artist: t.artists[0].name,
+        album: t.album.name,
+        uri: t.uri
+    }
+}
 
 
 export const isTrackInTracklist = (track: Track, tracklist: Track[]): boolean => {
-    return tracklist.some((t: Track) => t.uid === track.uid);
+    return tracklist.some((t: Track) => t.id === track.id);
 }
 
 export const removeTrackFromTracklist = (track: Track, tracklist: Track[]): Track[] => {
-    return tracklist.filter((t: Track) => t.uid !== track.uid);
+    return tracklist.filter((t: Track) => t.id !== track.id);
 }
 
 export const addTrackToTracklist = (track: Track, tracklist: Track[]): Track[] => {
@@ -31,7 +56,7 @@ export const filterTrackByQueryString = (tracklist: Track[], filterString: strin
     let result = byTitle.concat(byArtist, byAlbum);
     //remove duplicates
     result = result.filter((t: Track, index: number, self: Track[]) => {
-        return index === self.findIndex((t2: Track) => t2.uid === t.uid);
+        return index === self.findIndex((t2: Track) => t2.id === t.id);
     });  
 
     return result;

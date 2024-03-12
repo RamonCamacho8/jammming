@@ -1,6 +1,6 @@
 import React from "react";
 import Tracklist from "./Tracklist";
-import { ToggleMode, Track } from "../model/CustomTypes";
+import { Track } from "../model/Track";
 
 const toggleString = "add";
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Track } from "../model/CustomTypes";
+import { Track } from "../model/Track";
 
 
 function TrackComponent(props: { track: Track, toggleString: string, onToggle: (track: Track) => void}) {
