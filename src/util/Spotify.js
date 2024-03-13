@@ -1,8 +1,9 @@
 import { generateRandomString } from "./randomString";
-import { client_id_env } from "../envs";
-let client_id = client_id_env // this is replaced with a wrong client id to avoid misuse of the client id
+import { client_id_env, redirect_uri_env } from "../envs";
 
-let redirect_uri = "https://my-jammming.netlify.app";
+let client_id = client_id_env
+let redirect_uri = redirect_uri_env;
+
 let state = generateRandomString(16);
 let accessToken;
 let userURI;
