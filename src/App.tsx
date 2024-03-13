@@ -90,14 +90,19 @@ function App() {
 
 
   return (
-    <div className="App">
-      <SearchBar onSearch={search} />
-      <SearchBarResults resultsToRender={displayedSearchResults} onToggle={addTrackToCurrent} />
-      <PlaylistsContainer currentPlaylist={currentPlaylist} playlists={playlists}
-        setCurrentPlaylist={setCurrentPlaylist} onToggle={removeTrackFromCurrent}
-        onRename={handlePlaylistRename}
-        onSave={savePlaylistToSpotify} />
-        <button onClick={loadPlaylists}>Load playlists</button>
+    <div className="flex justify-center items-center bg-slate-50 dark:bg-slate-900 dark:text-slate-50 text-slate-800 w-svw h-svh" >
+      <div className='grid gap-4 grid-cols-2 grid-rows-10 container rounded-md p-10 h-4/5 dark:bg-slate-800 bg-slate:50'  >
+        <SearchBar onSearch={search} />
+        <SearchBarResults resultsToRender={displayedSearchResults} onToggle={addTrackToCurrent} />
+        <PlaylistsContainer currentPlaylist={currentPlaylist} playlists={playlists}
+          setCurrentPlaylist={setCurrentPlaylist} onToggle={removeTrackFromCurrent}
+          onRename={handlePlaylistRename}
+          onSave={savePlaylistToSpotify} />
+          <div className='dark:bg-slate-700 rounded-md flex justify-center items-center col-span-2 '>
+            <button className='p-2 dark:bg-indigo-600 dark:hover:bg-indigo-500 rounded-md' onClick={loadPlaylists}>Load playlists</button>
+          </div>
+          
+      </div>
     </div>
   );
 }

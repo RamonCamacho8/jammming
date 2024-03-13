@@ -39,7 +39,7 @@ function PlaylistComponent(props:{playlist: Playlist, toggleString: string,
     }
 
     return (
-        <div onClick={handlePlaylistSelection}>
+        <div onClick={handlePlaylistSelection} className="h-96 overflow-y-auto">
             <div style={{backgroundColor: selected ? 'lightblue' : 'wheat'}}>
                 { selected && 
                     editing ? (<input value={name} onChange={e => setName(e.target.value)} />) : <h3 style={{display:'inline'}} >{playlist.name}</h3>

@@ -13,7 +13,7 @@ function TrackComponent(props: { track: Track, toggleString: string, onToggle: (
     }
 
     return (
-        <div>
+        <div >
             <h4>{track.title}</h4>
             <p>{track.artist} | {track.album}</p>
             <button onClick={(e) => handleClick(e)}>{toggleString}</button>

@@ -11,10 +11,9 @@ function PlaylistsContainer(props: {  playlists: Playlist[], setCurrentPlaylist:
     const { currentPlaylist, playlists, setCurrentPlaylist,onToggle, onRename, onSave } = props;
 
     return (
-        <div className="playlists">
-            {/* These are the playlists the user have */}
-            <h2>Yours Playlists:</h2>
-            <div>
+        <div className="flex flex-col w-full row-span-8 rounded-md dark:bg-slate-700 p-4 bg-slate-100">
+            <h2 className="w-full font-medium text-center text-xl border-b-2 border-slate-800">Yours Playlists:</h2>
+            <div className="h-10" >
                 {
                     playlists.map((playlist) => {
                         return (
