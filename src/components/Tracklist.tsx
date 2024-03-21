@@ -10,7 +10,7 @@ function Tracklist(props: { tracklist: Track[], toggleString: string, onToggle: 
 
   
   return (
-    <div className="overflow-y-auto">
+    <div className="overflow-auto no-scrollbar">
         {tracklist.map((track, index) => {
             return <TrackComponent key={index} track={track} toggleString={toggleString} onToggle={onToggle} />;
         })}

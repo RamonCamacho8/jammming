@@ -38,17 +38,19 @@ function PlaylistComponent(props:{playlist: Playlist, toggleString: string,
         onSave(playlist);
     }
 
+
+
     return (
-        <div onClick={handlePlaylistSelection} className="h-96 overflow-y-auto">
-            <div style={{backgroundColor: selected ? 'lightblue' : 'wheat'}}>
+        <div onClick={handlePlaylistSelection} >
+            <div className={ `cursor-pointer flex flex-row w-full justify-between my-2 p-2 rounded shadow-slate-800 shadow ${selected ? "sticky top-0 bg-slate-600 font-bold" : "bg-slate-500"} ` }  >
                 { selected && 
-                    editing ? (<input value={name} onChange={e => setName(e.target.value)} />) : <h3 style={{display:'inline'}} >{playlist.name}</h3>
+                    editing ? (<input className="cursor-text w-11/12 caret-indigo-700 bg-slate-700" value={name} onChange={e => setName(e.target.value)} />) : <h3 className="cursor-text" style={{display:'inline'}} >{playlist.name}</h3>
                 }
-                {selected && <button onClick={handleRename}>{editing ? "Save" : "Edit"}</button>}
+                {selected && <button className="w-1/6 " onClick={handleRename}>{editing ? <i className="fa-solid fa-floppy-disk"></i> : <i className="fa-solid fa-pen-to-square"></i>}</button>}
             </div>
             { selected && <Tracklist tracklist={playlist.tracks} toggleString={toggleString} onToggle={onToggle} />}
-            <div>
-                { selected && <button onClick={handleSave}> Save to Spotify </button>}
+            <div className="sticky bottom-0 w-full text-center ">
+                { selected && <button onClick={handleSave} className="w-full h-min p-1 dark:bg-indigo-600 dark:hover:bg-indigo-500 rounded">Save to Spotify </button>}
             </div>
         </div>
     )
